@@ -10,7 +10,7 @@ y = iris.target
 TitleList = ["Sepal Length", "Sepal Width", "Petal Length", "Petal Width"]
 
 fig, axs = plt.subplots(NUMBER_PLOTS_SQ, NUMBER_PLOTS_SQ)
-fig.suptitle("Iris Data (red=setosa, green=versicolor, blue=virginica)")
+fig.suptitle("Iris Data (blue=setosa, red=versicolor, green=virginica)")
 
 def generatePlots():
   for v in range(NUMBER_PLOTS_SQ):

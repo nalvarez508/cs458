@@ -13,7 +13,7 @@ NUMBER_OF_POINTS = 50
 
 def findMinMax(p):
   hull = ConvexHull(p)
-  # Extract the points forming the hull
+  # Extract the points forming convex the hull
   hullpoints = p[hull.vertices,:]
   # Naive way of finding the best pair in O(H^2) time if H is number of points on hull
   hdist = cdist(hullpoints, hullpoints, metric='euclidean')

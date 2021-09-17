@@ -11,11 +11,13 @@ y = iris.target
 fig, axs = plt.subplots()
 fig2, axs2 = plt.subplots()
 
+# No decomposition
 def generateBasePlot():
   axs.scatter(x[:, 0], x[:, 1])
   axs.set_xlabel("Sepal Length (cm)")
   axs.set_ylabel("Sepal width (cm)")
 
+# Decompostion
 def generatePCAPlot():
   pca_iris = PCA(3)
   pca_iris.fit(x)

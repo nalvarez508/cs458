@@ -29,7 +29,7 @@ print("Accuracy of five-fold cross validation is ", avgAccuracy)
 
 max_depth_range = [None, 2, 5, 10]
 min_samples_leaf_range = [1, 5, 10]
-min_sample_split_range = [2,10, 20]
+min_sample_split_range = [2, 10, 20]
 min_leaf_nodes_range = [None, 5, 10, 20]
 
 param_grid = {"criterion": ['gini'],

@@ -15,7 +15,7 @@ c2 = np.random.uniform(low=0, high=20, size=(5200,2))
 plt.scatter(c2[:, 0], c2[:, 1], c='red', marker='.', s=2.5)
 plt.scatter(c1[:, 0], c1[:, 1], c='blue', marker='+', s=2.5)
 
-fig, axs = plt.subplots(2)
+fig, axs = plt.subplots(1,2)
 
 c3 = np.concatenate((c1,c2), axis=0)
 c3_target = np.concatenate((np.zeros((c1.shape[0],1)), np.ones((c2.shape[0],1))), axis=0)

@@ -57,10 +57,10 @@ Results_Bayes_Alpha = {
   0.1 : 0
 }
 
-Results_KNN_LeafSize = {
-  20 : 0,
-  30 : 0,
-  40 : 0
+Results_KNN_Neighbors = {
+  5 : 0,
+  10 : 0,
+  15 : 0
 }
 
 Results_Ada_LearningRate = {
@@ -69,6 +69,8 @@ Results_Ada_LearningRate = {
   0.1 : 0,
   1.0 : 0
 }
+
+Results_Forest_Multiple = dict()
 
 def trainMe(clf, Results, hyperparameter):
   print(f"Testing {str(clf)}")
@@ -87,12 +89,16 @@ def runTests():
     trainMe(MultinomialNB(alpha=hp), Results_Bayes_Alpha, hp)
 
   # K-nearest Neighbors (KNeighborsClassifier)
-  for hp in Results_KNN_LeafSize:
-    trainMe(KNeighborsClassifier(n_neighbors=10, leaf_size=hp), Results_KNN_LeafSize, hp)
+  for hp in Results_KNN_Neighbors:
+    trainMe(KNeighborsClassifier(n_neighbors=hp), Results_KNN_Neighbors, hp)
 
   # Random forest (RandomForestClassifier)
-  #grid = model_selection.GridSearchCV(estimator=pipe_rf, param_grid=param_grid, scoring='accuracy', refit=True, verbose=True)
-  #grid.fit(ng_train.data, ng_train.target)
+  print("Testing RandomForestClassifier(*)")
+  grid = model_selection.GridSearchCV(estimator=pipe_rf, param_grid=param_grid, scoring='accuracy', refit=True, verbose=True)
+  grid.fit(ng_train.data, ng_train.target)
+  means = grid.cv_results_["mean_test_score"]
+  for mean, params in zip(means, grid.cv_results_["params"]):
+    Results_Forest_Multiple.update({str(params) : mean})
 
 
   # AdaBoost (AdaBoostClassifier)
@@ -115,8 +121,10 @@ print(f'\nSupport Vector Machine\nHyperparameter: Penalty')
 printDictReallyNice(Results_SVC_Penalty)
 print(f'\nNaive Bayes\nHyperparameter: Smoothing (alpha)')
 printDictReallyNice(Results_Bayes_Alpha)
-print(f'\nK-nearest Neighbors\nHyperparameter: Leaf Size')
-printDictReallyNice(Results_KNN_LeafSize)
+print(f'\nK-nearest Neighbors\nHyperparameter: Number of Neighbors')
+printDictReallyNice(Results_KNN_Neighbors)
+print(f'\nRandom Forest\nHyperparameter: Max Depth, Min Samples Leaf, Min Samples Split, Min Leaf Nodes')
+printDictReallyNice(Results_Forest_Multiple)
 print(f'\nAdaBoost Classifier\nHyperparameter: Learning Rate')
 printDictReallyNice(Results_Ada_LearningRate)
 

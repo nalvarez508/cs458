@@ -1,22 +1,18 @@
-from os import pipe
 import numpy as np
-from sklearn import datasets, tree, model_selection, metrics, preprocessing, pipeline
+from sklearn import datasets, model_selection, metrics
 from sklearn.feature_extraction.text import TfidfTransformer, TfidfVectorizer
-from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.pipeline import Pipeline
 
 from sklearn.svm import LinearSVC
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-import matplotlib.pyplot as plt
 
 # (a) load newsgroups
 ng_train = datasets.fetch_20newsgroups(subset='train', categories=['rec.autos', 'talk.religion.misc', 'comp.graphics', 'sci.space'], remove=('headers', 'footers', 'quotes'))
 ng_test = datasets.fetch_20newsgroups(subset='test', categories=['rec.autos', 'talk.religion.misc', 'comp.graphics', 'sci.space'], remove=('headers', 'footers', 'quotes'))
 
-#x1 = ng_train.data
 y1 = ng_train.target
-#x2 = ng_test.data
 y2 = ng_test.target
 
 # (b) classifiers
@@ -36,15 +32,6 @@ param_grid = {"clf__criterion": ['gini'],
 pipe_rf = Pipeline([('vect', TfidfVectorizer()),
                       ('tfidf', TfidfTransformer()),
                       ('clf', RandomForestClassifier())])
-
-
-#grid = model_selection.RandomizedSearchCV(estimator=pipe_, param_distributions=param_grid, scoring='accuracy', refit=True, verbose=True)
-
-# RandomizedSearchCV results.
-# {*'clf__min_samples_split': 20, 'clf__min_samples_leaf': 1, 'clf__max_leaf_nodes': None, *'clf__max_depth': 10, 'clf__criterion': 'gini'}
-
-# Optimized results from adjusted param_grid and GridSearchCV.
-# {'clf__criterion': 'gini', 'clf__max_depth': 10, 'clf__max_leaf_nodes': None, 'clf__min_samples_leaf': 5, 'clf__min_samples_split': 20}
 
 Results_SVC_Penalty = {
   "l1" : 0,
@@ -100,7 +87,6 @@ def runTests():
   for mean, params in zip(means, grid.cv_results_["params"]):
     Results_Forest_Multiple.update({str(params) : mean})
 
-
   # AdaBoost (AdaBoostClassifier)
   for hp in Results_Ada_LearningRate:
     trainMe(AdaBoostClassifier(learning_rate=hp), Results_Ada_LearningRate, hp)
@@ -108,8 +94,6 @@ def runTests():
 def printDictReallyNice(d):
   for k,v in d.items():
     print(k, ' : ', v)
-
-
 
 vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english',)
 x1 = vectorizer.fit_transform(ng_train.data)
@@ -127,10 +111,3 @@ print(f'\nRandom Forest\nHyperparameter: Max Depth, Min Samples Leaf, Min Sample
 printDictReallyNice(Results_Forest_Multiple)
 print(f'\nAdaBoost Classifier\nHyperparameter: Learning Rate')
 printDictReallyNice(Results_Ada_LearningRate)
-
-#print(grid.best_params_)
-#y_pred = grid.best_estimator_.predict(ng_test.data)
-#print(metrics.confusion_matrix(ng_test.target, y_pred))
-
-#tree.plot_tree(grid.best_estimator_['clf'], filled=True, class_names=ng_test.target_names)
-#plt.show()

@@ -3,9 +3,9 @@ from datetime import datetime
 
 class Solar:
   def __init__(self, datafile):
-    convertfunc = lambda x: datetime.strptime(x.decode('ascii'), '%Y%m%d %H:%M')
-    allArray = np.genfromtxt(datafile, delimiter=',', names=True, excludelist=['ZONEID'], autostrip=True, converters={1: convertfunc}, dtype=(int, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float)) #skip_footer=10942
-
+    dateconvert = lambda x: datetime.strptime(x.decode('ascii'), '%Y%m%d %H:%M')
+    allArray = np.genfromtxt(datafile, delimiter=',', names=True, autostrip=True, converters={1: dateconvert}, dtype=(int, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float)) #skip_footer=10942
+    self.zone = allArray[u'\ufeffZONEID']#[:, 0]
     self.timestamp = allArray['TIMESTAMP']#[:, 1]
     self.var78 = allArray['VAR78']#[:, 2]
     self.var79 = allArray['VAR79']#[:, 3]

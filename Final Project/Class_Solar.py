@@ -2,10 +2,14 @@ import numpy as np
 from datetime import datetime
 
 class Solar:
-  def __init__(self, datafile):
-    dateconvert = lambda x: datetime.strptime(x.decode('ascii'), '%Y%m%d %H:%M')
-    self.allArray = np.genfromtxt(datafile, delimiter=',', names=True, autostrip=True, converters={1: dateconvert}, dtype=(int, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float)) #skip_footer=10942
-    self.zone = self.allArray[u'\ufeffZONEID']#[:, 0]
+  def __init__(self, datafile, skip=0):
+    # Function to grab timestamp and IGNORE the year because that is insignificant
+    dateconvert = lambda x: datetime.strptime(x.decode('ascii'), '%Y%m%d %H:%M').replace(year=1900)
+    self.allArray = np.genfromtxt(datafile, delimiter=',', names=True, autostrip=True, converters={1: dateconvert}, dtype=(float, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float), skip_footer=skip) #skip_footer=10942
+    try:
+      self.zone = self.allArray[u'\ufeffZONEID']#[:, 0]
+    except ValueError:
+      self.zone = self.allArray['ZONEID']
     self.timestamp = self.allArray['TIMESTAMP']#[:, 1]
     self.var78 = self.allArray['VAR78']#[:, 2]
     self.var79 = self.allArray['VAR79']#[:, 3]
@@ -20,6 +24,19 @@ class Solar:
     self.var178 = self.allArray['VAR178']#[:, 12]
     self.var228 = self.allArray['VAR228']#:, 13]
     self.power = self.allArray['POWER']#[:, 14]
+    self.data = self.combineData()
+    self.zonedata = np.split(self.data, np.unique(self.data[:, 0], return_index=True)[1][1:])
+    self.zonepower = np.split(self.power, np.unique(self.zone, return_index=True)[1][1:])
+
+  def combineData(self):
+    #dataDtype = np.dtype([('ZONEID', np.int64), ('TIMESTAMP', np.dtype('datetime65[m]')), ('VAR78')])
+
+    attrList = self.getAttributes()[:-1]
+    #print(attrList)
+    dataArray = np.vstack((attrList[0]))
+    for attr in attrList[1:]:
+      dataArray = np.hstack((dataArray, np.vstack((attr.astype(np.float64)))))
+    return dataArray
   
   def printAll(self):
     print(self.zone, self.timestamp, self.var78, self.var79, self.var134, self.var157, self.var164, self.var165, self.var166, self.var167, self.var169, self.var175, self.var178, self.var228, self.power)

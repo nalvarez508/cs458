@@ -7,6 +7,7 @@ NUMBER_ATTRIBUTES = 15
 BEGIN_AT = 0
 _VALUETOTEST = 8
 _NUMBERZONES = 3
+PleaseShowMe = False
 np.set_printoptions(precision=5, suppress=True)
 
 s_train = Solar("solar_training.csv")
@@ -51,7 +52,7 @@ def generatePlots():
 def makeModel():
   model = svm.SVR()
   model.fit(s_train.data, s_train.power)
-  y_pred_train = model.predict(s_train.data)
+  #y_pred_train = model.predict(s_train.data)
   #print(f"RMSE with training data: {metrics.mean_squared_error(s_train.power, y_pred_train, squared=False)}%")
   return model
 
@@ -61,6 +62,8 @@ def runModel():
     #print(f"RMSE of test data on Zone {z}: {metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)}%")
     RMSE_Scores[z] = metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)
     MAE_Scores[z] = metrics.mean_absolute_error(s_test.zonepower[z], y_pred_test)
+    if z == 0:
+      plotPredictVsActual(s_test.zonepower[0], y_pred_test)
 
 def printScores():
   RMSE_out = str()
@@ -79,8 +82,54 @@ def printScores():
   print("\tZone 1\t\tZone 2\t\tZone 3\t\tOverall")
   print(f"RMSE{RMSE_out}")
   print(f"MAE{MAE_out}")
+
+def plotPredictVsActual(act, pred):
+  global PleaseShowMe
+
+  def random_sample(array, size):
+    return array[np.random.choice(len(array), size=size, replace=False)]
+
+  def trendline(actual=True):
+    if actual == True:
+      z = np.polyfit(x1_results, sampleOfDifferences, 1)
+      p = np.poly1d(z)
+      plt.plot(x1_results, p(x1_results), "r--")
+    if actual == False:
+      avgSampleVal = np.full(len(sampleOfDifferences), np.mean(sampleOfDifferences))
+      plt.plot(x1_results, avgSampleVal, "r--")
   
+  def findErrorByElement():
+    def percentError(x):
+      if act[x] != 0:
+        return abs((pred[x]-act[x])/act[x])
+      else:
+        return 0
+
+    plt.ylim(0, 0.1)
+    tempArray = np.empty([0])
+    for i in range(0, len(act)):
+      tempArray = np.append(tempArray, percentError(i))
+    return tempArray
+
+  plotinfo = {
+    'x' : "Samples",
+    'y' : "abs(Actual - Predicted)",
+    'pct_sample' : 0.06
+  }
+  sampleOfDifferences = random_sample(np.subtract(act,pred), int(len(act)*plotinfo['pct_sample']))
+  #sampleOfDifferences = random_sample(findErrorByElement(), int(len(act)*plotinfo['pct_sample']))
+  x1_results = np.arange(len(sampleOfDifferences))
+  #plt.plot(x1_results, abs(sampleOfDifferences), lw=0.45)
+  plt.scatter(x1_results, abs(sampleOfDifferences), s=1.6)
+  plt.xlabel(plotinfo['x'])
+  plt.ylabel(plotinfo['y'])
+  trendline(False)
+
+  plt.title(f"Zone 1 Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
+  PleaseShowMe = True
 
 regr = makeModel()
 runModel()
 printScores()
+if PleaseShowMe:
+  plt.show()

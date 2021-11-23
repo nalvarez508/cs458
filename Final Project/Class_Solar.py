@@ -1,5 +1,6 @@
 import numpy as np
 from datetime import datetime
+from sklearn import preprocessing
 
 class Solar:
   def __init__(self, datafile, skip=0):
@@ -24,9 +25,23 @@ class Solar:
     self.var178 = self.allArray['VAR178']#[:, 12]
     self.var228 = self.allArray['VAR228']#:, 13]
     self.power = self.allArray['POWER']#[:, 14]
-    self.data = self.combineData()
-    self.zonedata = np.split(self.data, np.unique(self.data[:, 0], return_index=True)[1][1:])
+    self.notnormdata = self.combineData()
+    self.data = self.normalize(self.notnormdata)
+    self.zonedata = self.normalize(np.split(self.notnormdata, np.unique(self.notnormdata[:, 0], return_index=True)[1][1:]))
     self.zonepower = np.split(self.power, np.unique(self.zone, return_index=True)[1][1:])
+
+  def normalize(self, a):
+    if type(a) == list:
+      result = list()
+      for array in a:
+        sclr = preprocessing.MinMaxScaler()
+        sclr.fit(array)
+        result.append(sclr.transform(array))
+      return result
+    elif type(a) == np.ndarray:
+      sclr = preprocessing.MinMaxScaler()
+      sclr.fit(a)
+      return sclr.transform(a)
 
   def combineData(self):
     #dataDtype = np.dtype([('ZONEID', np.int64), ('TIMESTAMP', np.dtype('datetime65[m]')), ('VAR78')])

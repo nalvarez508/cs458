@@ -10,10 +10,14 @@ _NUMBERZONES = 3
 PleaseShowMe = False
 np.set_printoptions(precision=5, suppress=True)
 
-s_train = Solar("solar_training.csv")
-print("Shape of training data:", s_train.data.shape)
-s_test = Solar("solar_test.csv")#, 48159)
-print("Shape of test data:", s_test.data.shape)
+s_train = Solar("solar_training.csv", skip_f=24)
+print("Shape of training data (baseline):", s_train.data.shape)
+s_train_24ahead = Solar("solar_training_24ahead.csv")
+print("Shape of training data (24 hours ahead):", s_train_24ahead.data.shape)
+s_test = Solar("solar_test.csv")
+print("Shape of test data (baseline):", s_test.data.shape)
+s_test_24behind = Solar("solar_test_24behind.csv", skip_f=24)
+print("Shape of test data (24 hours behind):", s_test_24behind.data.shape)
 
 RMSE_Scores = [0,0,0]
 MAE_Scores = [0,0,0]
@@ -51,19 +55,36 @@ def generatePlots():
 
 def makeModel():
   model = svm.SVR()
-  model.fit(s_train.data, s_train.power)
+  #model.fit(s_train.data, s_train.power) #Used for current time predictions
+  model.fit(s_train.data, s_train_24ahead.power) #Used for 24 hour ahead predictions
   #y_pred_train = model.predict(s_train.data)
-  #print(f"RMSE with training data: {metrics.mean_squared_error(s_train.power, y_pred_train, squared=False)}%")
   return model
 
 def runModel():
   for z in range(0, _NUMBERZONES):
-    y_pred_test = regr.predict(s_test.zonedata[z])
-    #print(f"RMSE of test data on Zone {z}: {metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)}%")
-    RMSE_Scores[z] = metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)
-    MAE_Scores[z] = metrics.mean_absolute_error(s_test.zonepower[z], y_pred_test)
-    if z == 0:
-      plotPredictVsActual(s_test.zonepower[0], y_pred_test)
+
+    # Since there are multiple zones, we may need to shave off 24 hours.
+    if len(s_test_24behind.zonedata[z]) > len(s_test.zonepower[z]):
+      s_test_24behind.zonedata[z] = s_test_24behind.zonedata[z][:-24]
+    elif len(s_test_24behind.zonedata[z]) < len(s_test.zonepower[z]):
+      s_test.zonepower[z] = s_test.zonepower[z][24:]
+
+    #y_pred_test = regr.predict(s_test.zonedata[z]) #Used for current time predictions
+    y_pred_test = regr.predict(s_test_24behind.zonedata[z]) #Used for 24 hour ahead predictions
+    #print(len(s_test_24behind.zonedata[z]), len(s_test.zonedata[z]))
+    #print(len(s_test_24behind.zonepower[z]), len(s_test.zonepower[z]))
+    #print(len(y_pred_test))
+    print(y_pred_test)
+    # Scoring // Current Time or 24 Hours Ahead
+    try: # Zones of equal length
+      RMSE_Scores[z] = metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)
+      MAE_Scores[z] = metrics.mean_absolute_error(s_test.zonepower[z], y_pred_test)
+    except ValueError:
+      pass
+
+    if z == 1:
+      plotPredictVsActual(s_test.zonepower[1], y_pred_test)
+      pass
 
 def printScores():
   RMSE_out = str()
@@ -125,7 +146,7 @@ def plotPredictVsActual(act, pred):
   plt.ylabel(plotinfo['y'])
   trendline(False)
 
-  plt.title(f"Zone 1 Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
+  plt.title(f"Zone 3 Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
   PleaseShowMe = True
 
 regr = makeModel()

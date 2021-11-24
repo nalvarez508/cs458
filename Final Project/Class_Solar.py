@@ -3,10 +3,10 @@ from datetime import datetime
 from sklearn import preprocessing
 
 class Solar:
-  def __init__(self, datafile, skip=0):
+  def __init__(self, datafile, skip_f=0):
     # Function to grab timestamp and IGNORE the year because that is insignificant
     dateconvert = lambda x: datetime.strptime(x.decode('ascii'), '%Y%m%d %H:%M').replace(year=1900)
-    self.allArray = np.genfromtxt(datafile, delimiter=',', names=True, autostrip=True, converters={1: dateconvert}, dtype=(float, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float), skip_footer=skip) #skip_footer=10942
+    self.allArray = np.genfromtxt(datafile, delimiter=',', names=True, autostrip=True, converters={1: dateconvert}, dtype=(float, 'datetime64[m]', float, float, float, float, float, float, float, float, float, float, float, float, float), skip_footer=skip_f) #skip_footer=10942
     try:
       self.zone = self.allArray[u'\ufeffZONEID']#[:, 0]
     except ValueError:
@@ -29,6 +29,12 @@ class Solar:
     self.data = self.normalize(self.notnormdata)
     self.zonedata = self.normalize(np.split(self.notnormdata, np.unique(self.notnormdata[:, 0], return_index=True)[1][1:]))
     self.zonepower = np.split(self.power, np.unique(self.zone, return_index=True)[1][1:])
+
+  def _timestamp(self):
+    for i in range(0,25):
+      print(self.timestamp[i])
+    for i in range(len(self.timestamp)-25, len(self.timestamp)):
+      print(self.timestamp[i])
 
   def normalize(self, a):
     if type(a) == list:

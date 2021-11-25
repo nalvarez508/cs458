@@ -7,6 +7,7 @@ NUMBER_ATTRIBUTES = 15
 BEGIN_AT = 0
 _VALUETOTEST = 8
 _NUMBERZONES = 3
+_ZONETOTEST = 2 # ZoneID - 1
 PleaseShowMe = False
 np.set_printoptions(precision=5, suppress=True)
 
@@ -82,8 +83,8 @@ def runModel():
     except ValueError:
       pass
 
-    if z == 1:
-      plotPredictVsActual(s_test.zonepower[1], y_pred_test)
+    if z == _ZONETOTEST:
+      #plotPredictVsActual(s_test.zonepower[_ZONETOTEST], y_pred_test)
       pass
 
 def printScores():
@@ -116,8 +117,9 @@ def plotPredictVsActual(act, pred):
       p = np.poly1d(z)
       plt.plot(x1_results, p(x1_results), "r--")
     if actual == False:
-      avgSampleVal = np.full(len(sampleOfDifferences), np.mean(sampleOfDifferences))
-      plt.plot(x1_results, avgSampleVal, "r--")
+      #avgSampleVal = np.full(len(sampleOfDifferences), np.mean(sampleOfDifferences))
+      bunchOfZeroes = np.full(len(sampleOfDifferences), 0)
+      plt.plot(x1_results, bunchOfZeroes, "r--")
   
   def findErrorByElement():
     def percentError(x):
@@ -134,19 +136,19 @@ def plotPredictVsActual(act, pred):
 
   plotinfo = {
     'x' : "Samples",
-    'y' : "abs(Actual - Predicted)",
+    'y' : "(Actual - Predicted)",
     'pct_sample' : 0.06
   }
   sampleOfDifferences = random_sample(np.subtract(act,pred), int(len(act)*plotinfo['pct_sample']))
   #sampleOfDifferences = random_sample(findErrorByElement(), int(len(act)*plotinfo['pct_sample']))
   x1_results = np.arange(len(sampleOfDifferences))
   #plt.plot(x1_results, abs(sampleOfDifferences), lw=0.45)
-  plt.scatter(x1_results, abs(sampleOfDifferences), s=1.6)
+  plt.scatter(x1_results, (sampleOfDifferences), s=1.6)
   plt.xlabel(plotinfo['x'])
   plt.ylabel(plotinfo['y'])
   trendline(False)
 
-  plt.title(f"Zone 3 Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
+  plt.title(f"Zone {_ZONETOTEST+1} Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
   PleaseShowMe = True
 
 regr = makeModel()

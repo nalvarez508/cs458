@@ -54,8 +54,8 @@ def generatePlots():
         axs[v][h].xaxis.set_visible(False)
         axs[v][h].yaxis.set_visible(False)
 
-def makeModel():
-  model = svm.SVR()
+def makeModel(_t=1e-3, _c=1.0, _e=0.1):
+  model = svm.SVR(tol=_t, C=_c, epsilon=_e)
   #model.fit(s_train.data, s_train.power) #Used for current time predictions
   model.fit(s_train.data, s_train_24ahead.power) #Used for 24 hour ahead predictions
   #y_pred_train = model.predict(s_train.data)
@@ -75,7 +75,7 @@ def runModel():
     #print(len(s_test_24behind.zonedata[z]), len(s_test.zonedata[z]))
     #print(len(s_test_24behind.zonepower[z]), len(s_test.zonepower[z]))
     #print(len(y_pred_test))
-    print(y_pred_test)
+    #print(y_pred_test)
     # Scoring // Current Time or 24 Hours Ahead
     try: # Zones of equal length
       RMSE_Scores[z] = metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)
@@ -151,8 +151,19 @@ def plotPredictVsActual(act, pred):
   plt.title(f"Zone {_ZONETOTEST+1} Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
   PleaseShowMe = True
 
-regr = makeModel()
+regr = makeModel(1e-4, 1.3, 0.03)
 runModel()
 printScores()
 if PleaseShowMe:
   plt.show()
+
+#regr = None
+def helper_tuning():
+  global regr
+  for _tolerance in [1e-4]:
+    for _regularization in range(13, 16, 1):
+      for _epsilon in range(2, 5, 1):
+        print(f"\nTolerance: {_tolerance}, Regularization: {_regularization/10.0}, Epsilon: {_epsilon/100.0}")
+        regr = makeModel(_tolerance, _regularization/10.0, _epsilon/100.0)
+        runModel()
+        printScores()

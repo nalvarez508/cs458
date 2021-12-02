@@ -1,0 +1,209 @@
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.04
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131114	0.148730	0.137064	0.138969
+MAE	0.080348	0.094554	0.087347	0.087416
+
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.06
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131823	0.149524	0.136873	0.139407
+MAE	0.084266	0.098547	0.090528	0.091114
+
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.08
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.132620	0.150723	0.137264	0.140202
+MAE	0.088874	0.102964	0.094486	0.095441
+
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.1
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.133791	0.152908	0.138172	0.141624
+MAE	0.093626	0.107546	0.098717	0.099963
+
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.12
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.134625	0.155058	0.139336	0.143006
+MAE	0.097135	0.110855	0.101920	0.103303
+
+Tolerance: 0.01, Regularization: 0.6, Epsilon: 0.14
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.135721	0.156333	0.141112	0.144389
+MAE	0.100411	0.113343	0.104919	0.106224
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.04
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130542	0.148890	0.135765	0.138399
+MAE	0.079903	0.094566	0.086584	0.087018
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.06
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131056	0.149715	0.135732	0.138835
+MAE	0.083873	0.098706	0.089925	0.090835
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.08
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.132088	0.151175	0.136354	0.139872
+MAE	0.088522	0.103291	0.094067	0.095294
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.1
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.133165	0.153112	0.137107	0.141128
+MAE	0.093055	0.107751	0.097964	0.099590
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.12
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.134171	0.155218	0.138714	0.142701
+MAE	0.097098	0.111349	0.101724	0.103390
+
+Tolerance: 0.01, Regularization: 0.8, Epsilon: 0.14
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.135867	0.157269	0.140907	0.144681
+MAE	0.100499	0.114140	0.104940	0.106526
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.04
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130077	0.148966	0.134872	0.137972
+MAE	0.079338	0.094270	0.085821	0.086476
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.06
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130641	0.150034	0.135027	0.138567
+MAE	0.083307	0.098678	0.089382	0.090456
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.08
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131623	0.151602	0.135680	0.139635
+MAE	0.088112	0.103417	0.093566	0.095032
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.1
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.132622	0.153260	0.136568	0.140816
+MAE	0.092723	0.107830	0.097710	0.099421
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.12
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.134034	0.155136	0.138368	0.142513
+MAE	0.096896	0.111349	0.101519	0.103255
+
+Tolerance: 0.01, Regularization: 1.0, Epsilon: 0.14
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.135622	0.157752	0.140758	0.144711
+MAE	0.100257	0.114560	0.104959	0.106592
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.04
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130002	0.149505	0.134548	0.138018
+MAE	0.079264	0.094568	0.085712	0.086515
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.06
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130274	0.150758	0.134576	0.138536
+MAE	0.083237	0.099177	0.089272	0.090562
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.08
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131542	0.151793	0.135100	0.139478
+MAE	0.087974	0.103561	0.093220	0.094918
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.1
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.132506	0.153667	0.136113	0.140762
+MAE	0.092514	0.108134	0.097330	0.099326
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.12
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.133876	0.155449	0.138010	0.142445
+MAE	0.096729	0.111607	0.101302	0.103213
+
+Tolerance: 0.01, Regularization: 1.2, Epsilon: 0.14
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.135751	0.157884	0.140618	0.144751
+MAE	0.100294	0.114874	0.104996	0.106721
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.04
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.129786	0.149306	0.134041	0.137711
+MAE	0.078907	0.094376	0.085302	0.086195
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.06
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.130244	0.150584	0.134236	0.138354
+MAE	0.083167	0.099186	0.089169	0.090507
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.08
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.131503	0.152520	0.134770	0.139598
+MAE	0.087866	0.104116	0.093101	0.095028
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.1
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.132597	0.153631	0.135959	0.140729
+MAE	0.092406	0.108000	0.097150	0.099185
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.12
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.133890	0.155786	0.137880	0.142519
+MAE	0.096558	0.111683	0.101003	0.103081
+
+Tolerance: 0.01, Regularization: 1.4, Epsilon: 0.14
+
+		###### Scoring Metrics ######
+	Zone 1		Zone 2		Zone 3		Overall
+RMSE	0.135677	0.158414	0.140345	0.144812
+MAE	0.100175	0.115079	0.104726	0.106660

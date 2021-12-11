@@ -36,8 +36,6 @@ def generatePlots():
   attributes = s_train.getAttributes()
   names = s_train.getNames()
   coef = s_train.correlation()
-  #print(attributes[0].dtype.names[0])
-  #print("Sus=",attributes[0])
   for v in range(BEGIN_AT, NUMBER_ATTRIBUTES):
     for h in range(BEGIN_AT, NUMBER_ATTRIBUTES):
       if (v != h):
@@ -58,7 +56,6 @@ def makeModel(_t=1e-3, _c=1.0, _e=0.1):
   model = svm.SVR(tol=_t, C=_c, epsilon=_e)
   #model.fit(s_train.data, s_train.power) #Used for current time predictions
   model.fit(s_train.data, s_train_24ahead.power) #Used for 24 hour ahead predictions
-  #y_pred_train = model.predict(s_train.data)
   return model
 
 def runModel():
@@ -72,10 +69,6 @@ def runModel():
 
     #y_pred_test = regr.predict(s_test.zonedata[z]) #Used for current time predictions
     y_pred_test = regr.predict(s_test_24behind.zonedata[z]) #Used for 24 hour ahead predictions
-    #print(len(s_test_24behind.zonedata[z]), len(s_test.zonedata[z]))
-    #print(len(s_test_24behind.zonepower[z]), len(s_test.zonepower[z]))
-    #print(len(y_pred_test))
-    #print(y_pred_test)
     # Scoring // Current Time or 24 Hours Ahead
     try: # Zones of equal length
       RMSE_Scores[z] = metrics.mean_squared_error(s_test.zonepower[z], y_pred_test, squared=False)
@@ -85,6 +78,7 @@ def runModel():
 
     if z == _ZONETOTEST:
       #plotPredictVsActual(s_test.zonepower[_ZONETOTEST], y_pred_test)
+      #plotCurve(s_test.zonepower[_ZONETOTEST], y_pred_test, 'summer')
       pass
 
 def printScores():
@@ -135,20 +129,46 @@ def plotPredictVsActual(act, pred):
     return tempArray
 
   plotinfo = {
-    'x' : "Samples",
-    'y' : "(Actual - Predicted)",
-    'pct_sample' : 0.06
+    'x' : "Actual Power Output",
+    'y' : "Predicted Power Output",
+    'pct_sample' : 1
   }
-  sampleOfDifferences = random_sample(np.subtract(act,pred), int(len(act)*plotinfo['pct_sample']))
-  #sampleOfDifferences = random_sample(findErrorByElement(), int(len(act)*plotinfo['pct_sample']))
-  x1_results = np.arange(len(sampleOfDifferences))
+  #sampleOfDifferences = random_sample(np.subtract(act,pred), int(len(act)*plotinfo['pct_sample']))
+  #sampleOfDifferences = random_sample(act, pred*plotinfo['pct_sample'])
+  #x1_results = np.arange(len(sampleOfDifferences))
   #plt.plot(x1_results, abs(sampleOfDifferences), lw=0.45)
-  plt.scatter(x1_results, (sampleOfDifferences), s=1.6)
+  #plt.scatter(x1_results, (sampleOfDifferences), s=1.6)
+  #plt.scatter(act, pred, s=0.5)
+  plt.scatter(act, pred, s=0.1)
   plt.xlabel(plotinfo['x'])
   plt.ylabel(plotinfo['y'])
-  trendline(False)
+  #trendline(False)
+  plt.plot(np.arange(2.0), np.arange(2.0), "r")
 
   plt.title(f"Zone {_ZONETOTEST+1} Results\nSampling {int(plotinfo['pct_sample']*100)}% of Data")
+  PleaseShowMe = True
+
+def plotCurve(act, pred, season):
+  global PleaseShowMe
+
+  days = {
+    'winter' : [6950, 6950+24],
+    'spring' : [8993, 8993+24],
+    'summer' : [11176-240, 11176+24-240],
+    'fall' : [13367-36, 13367+24-36]
+  }
+  actual_range = act[days[season][0] : days[season][1]]
+  predicted_range = pred[days[season][0] : days[season][1]]
+  x1_hours = np.arange(24)
+  plt.scatter(x1_hours, actual_range, c='b', marker='x')
+  plt.scatter(x1_hours, predicted_range, c='r', marker='x')
+  plt.plot(x1_hours, actual_range, 'b--', label="Actual")
+  plt.plot(x1_hours, predicted_range, 'r--', label="Predicted")
+  plt.title(f"Zone {_ZONETOTEST+1} Prediction Results\nSeason: {season}")
+  plt.xlabel("Hours")
+  plt.ylabel("Power Output")
+  plt.legend()
+
   PleaseShowMe = True
 
 regr = makeModel(1e-4, 1.3, 0.03)

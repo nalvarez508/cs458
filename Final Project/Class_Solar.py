@@ -10,7 +10,10 @@ class Solar:
     try:
       self.zone = self.allArray[u'\ufeffZONEID']#[:, 0]
     except ValueError:
-      self.zone = self.allArray['ZONEID']
+      try:
+        self.zone = self.allArray['ZONEID']
+      except ValueError:
+        self.zone = self.allArray[self.allArray.dtype.names[0]]
     self.timestamp = self.allArray['TIMESTAMP']#[:, 1]
     self.var78 = self.allArray['VAR78']#[:, 2]
     self.var79 = self.allArray['VAR79']#[:, 3]
